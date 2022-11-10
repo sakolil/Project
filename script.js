@@ -19,23 +19,23 @@ function createObjectsMatrix(matrix){
         newObjectsMatrix[y]=[];
         for(let x = 0;x<matrix[y].length;x++){
             if(matrix[y][x]===1){
-                const newGrass= new Grass(x,y,1,matrix,newObjectsMatrix);
+                const newGrass= new Grass(x,y,1,matrix,newObjectsMatrix/*,0*/);
                 newObjectsMatrix[y][x] = newGrass;
             }
             else if(matrix[y][x]===2){
-                const newGrassEater= new GrassEater(x,y,2,matrix,newObjectsMatrix);
+                const newGrassEater= new GrassEater(x,y,2,matrix,newObjectsMatrix,10,1);
                 newObjectsMatrix[y][x] = newGrassEater;
             }
             else if(matrix[y][x]===3){
-                const newPredator= new Predator(x,y,3,matrix,newObjectsMatrix);
+                const newPredator= new Predator(x,y,3,matrix,newObjectsMatrix/*,12*/);
                 newObjectsMatrix[y][x] = newPredator;
             }
             else if(matrix[y][x]===4){
-                const newParasite= new Parasite(x,y,4,matrix,newObjectsMatrix);
+                const newParasite= new Parasite(x,y,4,matrix,newObjectsMatrix/*,5*/);
                 newObjectsMatrix[y][x] = newParasite;
             }
             else if(matrix[y][x]===5){
-                const newRobot= new Robot(x,y,5,matrix,newObjectsMatrix);
+                const newRobot= new Robot(x,y,5,matrix,newObjectsMatrix/*,11*/);
                 newObjectsMatrix[y][x] = newRobot;
             }    
             else{
