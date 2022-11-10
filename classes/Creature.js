@@ -7,6 +7,7 @@ class Creature {
         this.matrix = matrix;
         this.objectMatrix = objectMatrix;
         this.energy = energy;
+        this.spawnEnergy = energy;
         this.target = target;
         this.updateCoordinates();
 

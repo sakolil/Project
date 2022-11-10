@@ -27,11 +27,11 @@ function createObjectsMatrix(matrix){
                 newObjectsMatrix[y][x] = newGrassEater;
             }
             else if(matrix[y][x]===3){
-                const newPredator= new Predator(x,y,3,matrix,newObjectsMatrix/*,12*/);
+                const newPredator= new Predator(x,y,3,matrix,newObjectsMatrix,12,2);
                 newObjectsMatrix[y][x] = newPredator;
             }
             else if(matrix[y][x]===4){
-                const newParasite= new Parasite(x,y,4,matrix,newObjectsMatrix/*,5*/);
+                const newParasite= new Parasite(x,y,4,matrix,newObjectsMatrix,5,3);
                 newObjectsMatrix[y][x] = newParasite;
             }
             else if(matrix[y][x]===5){
