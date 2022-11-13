@@ -92,6 +92,27 @@ class Robot extends Creature{
         
     }
 
+    move() {
+        let targetCells = this.chooseCells(0);
+        let newCell = random(targetCells);
+
+        if (this.energy > 0 && newCell) {
+            let newX = newCell[0];
+            let newY = newCell[1];
+
+            this.matrix[this.y][this.x] = 0;
+            this.matrix[newY][newX] = this.id;
+
+            this.objectMatrix[newY][newX] = this;
+            this.objectMatrix[this.y][this.x] = null;
+
+            this.x = newX;
+            this.y = newY;
+
+        }
+        this.die();
+    }
+    
     die() {
         if (this.energy >= 60) {
             this.matrix[this.y][this.x] = 0;

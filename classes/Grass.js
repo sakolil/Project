@@ -5,12 +5,12 @@ class Grass extends Creature{
         let targetCells = this.chooseCells(0);
         let newCell = random(targetCells)
 
-        if(this.energy == 8 && newCell){
+        if(this.energy >= 8 && newCell){
             let newX = newCell[0];
             let newY = newCell[1];
 
             this.matrix[newY][newX] = this.id;
-            let newGrass = new Grass(newX,newY,this.id,this.matrix,this.objectMatrix);
+            let newGrass = new Grass(newX,newY,this.id,this.matrix,this.objectMatrix,0,0);
             this.objectMatrix[newY][newX]=newGrass;
             this.energy = 0;
         }
