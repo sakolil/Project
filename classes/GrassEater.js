@@ -1,8 +1,10 @@
+var Creature = require('./Creature.js');
+
 class GrassEater extends Creature{
 
     multiply() {
         let targetCells = this.chooseCells(1);
-        let newCell = random(targetCells)
+        let newCell = this.random(targetCells)
 
         if (this.energy >= 12 && newCell) {
             let newX = newCell[0];
@@ -15,3 +17,6 @@ class GrassEater extends Creature{
         }
     }
 }
+
+
+module.exports = GrassEater;

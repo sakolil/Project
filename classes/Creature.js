@@ -13,6 +13,10 @@ class Creature {
 
     }
 
+    random(array){
+        return array[Math.floor(Math.random() * (array.length)+1)];
+    }
+
     updateCoordinates() {
         this.directions = [
             [this.x - 1, this.y - 1],
@@ -44,7 +48,7 @@ class Creature {
 
     move() {
         let targetCells = this.chooseCells(0);
-        let newCell = random(targetCells);
+        let newCell = this.random(targetCells);
 
         if (this.energy > 0 && newCell) {
             let newX = newCell[0];
@@ -66,7 +70,7 @@ class Creature {
 
     eat() {
         let targetCells = this.chooseCells(this.target);
-        let newCell = random(targetCells);
+        let newCell = this.random(targetCells);
 
         if (this.energy > 0 && newCell) {
             let newX = newCell[0];
@@ -101,3 +105,5 @@ class Creature {
         this.eat();
     }
 }
+
+module.exports = Creature;

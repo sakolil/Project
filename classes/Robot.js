@@ -1,3 +1,5 @@
+var Creature = require('./Creature.js');
+
 class Robot extends Creature{
 
     constructor(x, y, id, matrix, objectMatrix, energy) {
@@ -68,7 +70,7 @@ class Robot extends Creature{
         let thirdTargets = this.chooseCells(4);
         let fourthTargets = this.chooseCells(1);
         let targets = fourthTargets.concat(thirdTargets.concat(secondTargets.concat(firstTargets)));
-        let newCell = random(targets);
+        let newCell = this.random(targets);
 
         if (newCell) {
             let newX = newCell[0];
@@ -94,7 +96,7 @@ class Robot extends Creature{
 
     move() {
         let targetCells = this.chooseCells(0);
-        let newCell = random(targetCells);
+        let newCell = this.random(targetCells);
 
         if (this.energy > 0 && newCell) {
             let newX = newCell[0];
@@ -122,3 +124,5 @@ class Robot extends Creature{
     }
 
 }
+
+module.exports = Robot;

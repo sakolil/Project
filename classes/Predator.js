@@ -1,9 +1,11 @@
+var Creature = require('./Creature.js');
+
 class Predator extends Creature{
 
 
     multiply() {
         let targetCells = this.chooseCells(0);
-        let newCell = random(targetCells)
+        let newCell = this.random(targetCells)
 
         if (this.energy >= 18 && newCell) {
             let newX = newCell[0];
@@ -16,3 +18,5 @@ class Predator extends Creature{
         }
     }
 }
+
+module.exports = Predator; 

@@ -1,17 +1,18 @@
+var Grass = require('./classes/Grass.js');
+var GrassEater = require('./classes/GrassEater.js');
+var Predator = require('./classes/Predator.js');
+var Parasite = require('./classes/Parasite.js');
+var Robot = require('./classes/Robot.js');
+
 const matrix = createMatrix(50,50);
 const objectMatrix = createObjectsMatrix(matrix);
-const side = 50;
 
-function setup(){
-    createCanvas(matrix[0].length*side,matrix.length*side);
-    background("grey");   
-    frameRate(30);
-}
+// const theMatrix  = setInterval(updateObjectsMatrix(objectMatrix),1000);
+// const logs = setInterval(logIDs(),1000);
+logIDs();
+updateObjectsMatrix(objectMatrix);
+logIDs();
 
-function draw(){
-    drawMatrix(matrix);
-    updateObjectsMatrix(objectMatrix);
-}
 
 function createObjectsMatrix(matrix){
     const newObjectsMatrix = []
@@ -19,23 +20,23 @@ function createObjectsMatrix(matrix){
         newObjectsMatrix[y]=[];
         for(let x = 0;x<matrix[y].length;x++){
             if(matrix[y][x]===1){
-                const newGrass= new Grass(x,y,1,matrix,newObjectsMatrix,0,0);
+                const newGrass = new Grass(x,y,1,matrix,newObjectsMatrix,0,0);
                 newObjectsMatrix[y][x] = newGrass;
             }
             else if(matrix[y][x]===2){
-                const newGrassEater= new GrassEater(x,y,2,matrix,newObjectsMatrix,10,1);
+                const newGrassEater = new GrassEater(x,y,2,matrix,newObjectsMatrix,10,1);
                 newObjectsMatrix[y][x] = newGrassEater;
             }
             else if(matrix[y][x]===3){
-                const newPredator= new Predator(x,y,3,matrix,newObjectsMatrix,12,2);
+                const newPredator = new Predator(x,y,3,matrix,newObjectsMatrix,12,2);
                 newObjectsMatrix[y][x] = newPredator;
             }
             else if(matrix[y][x]===4){
-                const newParasite= new Parasite(x,y,4,matrix,newObjectsMatrix,5,3);
+                const newParasite = new Parasite(x,y,4,matrix,newObjectsMatrix,5,3);
                 newObjectsMatrix[y][x] = newParasite;
             }
             else if(matrix[y][x]===5){
-                const newRobot= new Robot(x,y,5,matrix,newObjectsMatrix,11);
+                const newRobot = new Robot(x,y,5,matrix,newObjectsMatrix,11);
                 newObjectsMatrix[y][x] = newRobot;
             }    
             else{
@@ -77,32 +78,6 @@ function createMatrix(horizontalLength, verticalLength) {
     return newMatrix;
 }
 
-function drawMatrix(matrix){
-    for(let y  = 0;y<matrix.length;y++){
-        for (let x = 0;x<matrix[0].length;x++){
-            if(matrix[y][x]===1){
-                fill("green");
-            }
-            else if(matrix[y][x]==2){
-                fill("yellow");
-            }
-            else if(matrix[y][x]==3){
-                fill("red");
-            }
-            else if(matrix[y][x]==4){
-                fill("blue");
-            }
-            else if(matrix[y][x]==5){
-                fill("orange");
-            }
-            else{
-                fill("grey")
-            }
-            rect(x*side,y*side,side,side)
-        }
-    }
-}
-
 function updateObjectsMatrix(objectMatrix){
     for(let y =0;y<objectMatrix.length;y++){
         for(let x = 0;x<objectMatrix[y].length;x++){
@@ -112,4 +87,37 @@ function updateObjectsMatrix(objectMatrix){
             }
         }
     }
+}
+
+function logIDs(){
+    for(let y =0;y<objectMatrix.length;y++){
+        for(let x = 0;x<objectMatrix[y].length;x++){
+            if(matrix[y][x]===1){
+            console.log("Grass =>"+ objectMatrix[y][x].id);
+               
+            }
+            else if(matrix[y][x]===2){
+            console.log("GrassEater =>"+ objectMatrix[y][x].id);
+                
+            }
+            else if(matrix[y][x]===3){
+            console.log("Predator =>"+ objectMatrix[y][x].id);
+                
+            }
+            else if(matrix[y][x]===4){
+            console.log("Parasite =>"+ objectMatrix[y][x].id);
+                
+            }
+            else if(matrix[y][x]===5){
+            console.log("Robot =>"+ objectMatrix[y][x].id);
+                
+            }    
+            else{
+            console.log("Void => 0");
+                
+            }
+
+        }
+    }
+    console.log("End");
 }

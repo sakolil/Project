@@ -1,9 +1,11 @@
+var Creature = require('./Creature.js');
+
 class Grass extends Creature{
 
     multiply(){
         this.energy++;
         let targetCells = this.chooseCells(0);
-        let newCell = random(targetCells)
+        let newCell = this.random(targetCells)
 
         if(this.energy >= 8 && newCell){
             let newX = newCell[0];
@@ -21,3 +23,5 @@ class Grass extends Creature{
     }
 
 }
+
+module.exports = Grass;

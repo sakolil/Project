@@ -1,8 +1,10 @@
+var Creature = require('./Creature.js');
+
 class Parasite extends Creature{
 
     multiply() {
         let targetCells = this.chooseCells(3);
-        let newCell = random(targetCells)
+        let newCell = this.random(targetCells)
 
         if (this.energy >= 7 && newCell) {
             let newX = newCell[0];
@@ -18,7 +20,7 @@ class Parasite extends Creature{
 
     eat() {
         let targetCells = this.chooseCells(this.target);
-        let newCell = random(targetCells);
+        let newCell = this.random(targetCells);
 
         if (this.energy > 0 && newCell) {
             let targetX = newCell[0];
@@ -36,3 +38,5 @@ class Parasite extends Creature{
     }
 
 }
+
+module.exports = Parasite;
