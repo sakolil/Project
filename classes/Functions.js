@@ -6,6 +6,12 @@ var Robot = require('../classes/Robot.js');
 
 module.exports = class functions{
 
+    constructor(matrixSide){
+        this.matrix = this.createMatrix(matrixSide);
+        this.objectMatrix = this.createObjectsMatrix(this.matrix);
+        this.gameStatus = 'active';
+    }
+
     createObjectsMatrix(matrix){
         const newObjectsMatrix = []
         for(let y = 0;y<matrix.length;y++){
@@ -41,11 +47,11 @@ module.exports = class functions{
     }
 
 
-    createMatrix(horizontalLength, verticalLength) {
+    createMatrix(matrixLength) {
         let newMatrix = [];
-        for (let y = 0; y < verticalLength; y++) {
+        for (let y = 0; y < matrixLength; y++) {
             newMatrix[y] = [];
-            for (let x = 0; x < horizontalLength; x++) {
+            for (let x = 0; x < matrixLength; x++) {
                 const randomSectionCursor = Math.random()*100;
                 if (randomSectionCursor < 45) {
                     newMatrix[y][x] = 1;
@@ -69,16 +75,40 @@ module.exports = class functions{
         }
         return newMatrix;
     }
-    
-    updateObjectsMatrix(objectMatrix){
-        for(let y =0;y<objectMatrix.length;y++){
-            for(let x = 0;x<objectMatrix[y].length;x++){
-                const object = objectMatrix[y][x]; 
+//Relocate theGame func to server.js
+    theGame(){
+        this.gameStatus = 'restart';
+        console.log(this.gameStatus);
+        if(this.gameStatus === 'active'){
+            this.Activate();
+            console.log("act");
+        }
+        else if(this.gameStatus === 'paused'){
+
+        }
+        else if(this.gameStatus === 'restart'){
+            this.Restart(this.matrix.length);
+
+        }
+        
+    }
+
+    Activate(){
+        for(let y =0;y<this.objectMatrix.length;y++){
+            for(let x = 0;x<this.objectMatrix[y].length;x++){
+                const object = this.objectMatrix[y][x]; 
                 if(object){
                     object.update();
                 }
             }
         }
     }
+
+    Restart(length){
+        this.matrix = this.createMatrix(length);
+        this.objectMatrix = this.createObjectsMatrix(this.matrix);
+        this.gameStatus = 'paused';
+    }
+
 
 }
