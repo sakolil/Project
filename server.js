@@ -63,6 +63,8 @@ function Restart(length){
     functions.matrix = functions.createMatrix(length);
     functions.objectMatrix = functions.createObjectsMatrix(functions.matrix);
     gameStatus = 'paused';
+    season = seasons[0];
+    timer = 1;
 }
 
 function changeStatus(val){
@@ -159,4 +161,4 @@ function parasiteChanger(object){
     } 
 }
 
-setInterval(theGame,1000);
+setInterval(theGame,500);
