@@ -1,6 +1,6 @@
 class Creature {
 
-    constructor(x, y, id, matrix, objectMatrix, energy, target) {
+    constructor(x, y, id, matrix, objectMatrix, energy, target,mulEnergy) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -10,11 +10,14 @@ class Creature {
         this.spawnEnergy = energy;
         this.target = target;
         this.updateCoordinates();
-
+        this.gender = this.random([true,false]);//true == female, false == male
+        this.season = 'spring';
+        this.mulEnergy = mulEnergy;
+        this.moveEnergy = 1;
     }
 
     random(array){
-        return array[Math.floor(Math.random() * (array.length)+1)];
+        return array[Math.floor(Math.random() * (array.length))];
     }
 
     updateCoordinates() {
@@ -63,7 +66,7 @@ class Creature {
             this.x = newX;
             this.y = newY;
 
-            this.energy--;
+            this.energy-=this.moveEnergy;
         }
         this.die();
     }
@@ -85,12 +88,15 @@ class Creature {
             this.x = newX;
             this.y = newY;
 
-            this.energy++;
-
+            this.energy+=5;
+            console.log(this.gender);
+        }
+        if(this.gender){
             this.multiply();
         }else{
             this.move();
         }
+            
         
     }
 

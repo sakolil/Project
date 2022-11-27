@@ -7,12 +7,12 @@ class Grass extends Creature{
         let targetCells = this.chooseCells(0);
         let newCell = this.random(targetCells)
 
-        if(this.energy >= 8 && newCell){
+        if(this.energy >= this.mulEnergy && newCell){
             let newX = newCell[0];
             let newY = newCell[1];
 
             this.matrix[newY][newX] = this.id;
-            let newGrass = new Grass(newX,newY,this.id,this.matrix,this.objectMatrix,0,0);
+            let newGrass = new Grass(newX,newY,this.id,this.matrix,this.objectMatrix,this.spawnEnergy,this.target, this.mulEnergy);
             this.objectMatrix[newY][newX]=newGrass;
             this.energy = 0;
         }
@@ -21,6 +21,8 @@ class Grass extends Creature{
     update(){
         this.multiply();
     }
+
+    
 
 }
 
