@@ -30,6 +30,9 @@ let timer = 1;
 function theGame(){
     io.sockets.emit("matrix",functions.matrix)
     io.sockets.emit("season",season);
+    let creaturtes = getCreatureCount();
+    io.sockets.emit("stats",creaturtes);
+
 
     console.log(gameStatus)
     if(gameStatus === 'active'){
@@ -45,6 +48,30 @@ function theGame(){
 
     }
     
+}
+
+function getCreatureCount(){
+    let creaturesCounts = [0,0,0,0,0];
+    for(let y =0;y<functions.matrix.length;y++){
+        for(let x = 0;x<functions.matrix[y].length;x++){
+            if(functions.matrix[y][x] == 1){
+                creaturesCounts[0] ++;
+            }
+            else if(functions.matrix[y][x] == 2){
+                creaturesCounts[1] ++;
+            }
+            else if(functions.matrix[y][x] == 3){
+                creaturesCounts[2] ++;
+            }
+            else if(functions.matrix[y][x] == 4){
+                creaturesCounts[3] ++;
+            }
+            else if(functions.matrix[y][x] == 5){
+                creaturesCounts[4] ++;
+            }
+        }
+    }
+    return creaturesCounts;
 }
 
 function Activate(){
@@ -73,7 +100,6 @@ function changeStatus(val){
 }
 
 function changeSeason(){
-    console.log(timer);
     if(timer%30 == 0){
         if(seasons.indexOf(season) == (seasons.length-1) ){
             season = seasons[0];
@@ -99,10 +125,10 @@ function alterStatsForSeason(){
                 else if(object.id == 2){
                     grassEaterChanger(object);
                 }
-                else if(object.id == 1){
+                else if(object.id == 3){
                     predatorChanger(object);
                 }
-                else if(object.id == 1){
+                else if(object.id == 4){
                     parasiteChanger(object);
                 }    
             }

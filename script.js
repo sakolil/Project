@@ -3,11 +3,8 @@ var start = document.getElementById("start");
 var pause = document.getElementById("pause");
 var restart = document.getElementById("restart");
 var seasonText = document.getElementById("season");
-var grass = document.getElementById("grass");
-var grassEater = document.getElementById("grassEater");
-var predator = document.getElementById("predator");
-var parasite = document.getElementById("parasite");
-var robot = document.getElementById("robot");
+var stats = document.getElementById("stats");
+var creatureNames = ["Grass","Grasseater","Predator","Parasite","Robot"];
 let season = 'spring';
 let grasscolor = 'green';
 
@@ -24,18 +21,24 @@ function setup(){
 
 function draw(){
     socket.on("matrix",drawMatrix);
+    socket.on("stats",displayStats);
     socket.on("season",changeseason);
     seasonText.innerText = "The current season is " + season;
     console.log(mouseX + " " + mouseY);
 
 }
 
-// function displayStat(creature){
-//     creature.innerText = creature.id + ": " + 
-// }
-function getCreatureCount(){
-    socket.on("stats")
+
+function displayStats(creatures){
+    let text = ""
+    for(let i = 0; i<creatures.length;i++){
+        text += creatureNames[i] + ": " + creatures[i] + "\n";
+    }
+    stats.innerText = text;
 }
+
+
+
 
 function drawMatrix(matrix){
     let side = 50;
