@@ -1,22 +1,28 @@
+p5.disableFriendlyErrors = true 
 var socket = io();
 var start = document.getElementById("start");
-var pause = document.getElementById("pause");
+var paused = document.getElementById("pause");
 var restart = document.getElementById("restart");
 var seasonText = document.getElementById("season");
 var stats = document.getElementById("stats");
 var creatureNames = ["Grass","Grasseater","Predator","Parasite","Robot"];
 let season = 'spring';
 let grasscolor = 'green';
+let matrixLength = 20;
+let squareSide = 10;
+let mouseCoords;
 
 start.onclick = function(){socket.emit('Start','active');};
-pause.onclick = function(){socket.emit('Pause','paused');};
+paused.onclick = function(){socket.emit('Pause','paused');};
 restart.onclick = function(){socket.emit('Restart','restart');};
+window.onclick = explode;
+
 // document.onclick = console.log(mouseX + " " + mouseY);
 
 function setup(){
-    createCanvas(500,500);
+    createCanvas(matrixLength*squareSide,matrixLength*squareSide);
     background("gray");
-    frameRate(30);
+    frameRate(60);
 }
 
 function draw(){
@@ -24,10 +30,15 @@ function draw(){
     socket.on("stats",displayStats);
     socket.on("season",changeseason);
     seasonText.innerText = "The current season is " + season;
-    console.log(mouseX + " " + mouseY);
-
+    mouseCoords = [mouseX,mouseY];
 }
 
+function explode(){
+    let matrixCoords = [Math.floor(mouseCoords[0]/squareSide),Math.floor(mouseCoords[1]/squareSide)];
+    if( matrixCoords[0] < matrixLength && matrixCoords[0]>=0 && matrixCoords[1] < matrixLength && matrixCoords[1]>=0 ){
+        socket.emit("bomb",matrixCoords);
+    }
+}
 
 function displayStats(creatures){
     let text = ""
@@ -41,7 +52,6 @@ function displayStats(creatures){
 
 
 function drawMatrix(matrix){
-    let side = 50;
     if(season == 'spring'){
         grasscolor = "green";
     }
@@ -75,7 +85,7 @@ function drawMatrix(matrix){
             else{
                 fill("grey")
             }
-            rect(x*side,y*side,side,side)
+            rect(x*squareSide,y*squareSide,squareSide,squareSide);
         }
     }
 }

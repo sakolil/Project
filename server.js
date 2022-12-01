@@ -1,10 +1,11 @@
 //Server's code
 var Functions = require('./modules/Functions.js');
-var functions = new Functions(10);
+var functions = new Functions(20);
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var fs = require('fs');
 app.use(express.static("."));
 
 app.get('/', function (req, res) {
@@ -19,11 +20,14 @@ io.on('connection', function (socket) {
     socket.on('Pause',changeStatus);
     socket.on('Start',changeStatus);
     socket.on('Restart',changeStatus);
+    socket.on("bomb",bomb);
     
 });
 
 let gameStatus = 'paused';
-const seasons = ['spring','summer','fall','winter']
+const seasons = ['spring','summer','fall','winter'];
+var creatureNames = ["Grass","Grasseater","Predator","Parasite","Robot"];
+let jsonFileName = "stats.JSON";
 let season = seasons[0];
 let timer = 1;
 
@@ -33,8 +37,6 @@ function theGame(){
     let creaturtes = getCreatureCount();
     io.sockets.emit("stats",creaturtes);
 
-
-    console.log(gameStatus)
     if(gameStatus === 'active'){
         Activate();
         changeSeason();
@@ -48,6 +50,45 @@ function theGame(){
 
     }
     
+}
+
+function bomb(mouse){
+    let coords = [
+        [mouse[0],mouse[1]],
+        [mouse[0] - 1, mouse[1] - 1],
+        [mouse[0], mouse[1] - 1],
+        [mouse[0] + 1, mouse[1] - 1],
+        [mouse[0] - 1, mouse[1]],
+        [mouse[0] + 1, mouse[1]],
+        [mouse[0] - 1, mouse[1] + 1],
+        [mouse[0], mouse[1] + 1],
+        [mouse[0] + 1, mouse[1] + 1]
+    ];
+    for(let i = 0; i < coords.length;i++){
+        functions.objectMatrix[coords[i][1]][coords[i][0]] = null;
+        functions.matrix[coords[i][1]][coords[i][0]] = 0;
+    }
+
+}
+
+function Activate(){
+    for(let y =0;y<functions.objectMatrix.length;y++){
+        for(let x = 0;x<functions.objectMatrix[y].length;x++){
+            const object = functions.objectMatrix[y][x]; 
+            if(object){
+                object.update();
+                object.season = season;
+            }
+        }
+    }
+}
+
+function Restart(length){
+    functions.matrix = functions.createMatrix(length);
+    functions.objectMatrix = functions.createObjectsMatrix(functions.matrix);
+    gameStatus = 'paused';
+    season = seasons[0];
+    timer = 1;
 }
 
 function getCreatureCount(){
@@ -74,28 +115,19 @@ function getCreatureCount(){
     return creaturesCounts;
 }
 
-function Activate(){
-    for(let y =0;y<functions.objectMatrix.length;y++){
-        for(let x = 0;x<functions.objectMatrix[y].length;x++){
-            const object = functions.objectMatrix[y][x]; 
-            if(object){
-                object.update();
-                object.season = season;
-            }
-        }
+function printInJSONFile(){
+    let count = getCreatureCount();
+    let info = [];
+    for( let i =0; i< count.length; i++){
+        info.push({"Class":creatureNames[i], "Count":count[i]});
     }
-}
-
-function Restart(length){
-    functions.matrix = functions.createMatrix(length);
-    functions.objectMatrix = functions.createObjectsMatrix(functions.matrix);
-    gameStatus = 'paused';
-    season = seasons[0];
-    timer = 1;
+    info = JSON.stringify(info);
+    fs.writeFileSync(jsonFileName,info);
 }
 
 function changeStatus(val){
     gameStatus = val;
+    val == "paused" ? printInJSONFile() : console.log();
     console.log(gameStatus);
 }
 
@@ -187,4 +219,7 @@ function parasiteChanger(object){
     } 
 }
 
-setInterval(theGame,500);
+let interval = 1000//ms;
+printInJSONFile();
+setInterval(theGame,interval);
+setInterval(printInJSONFile,interval*60);
